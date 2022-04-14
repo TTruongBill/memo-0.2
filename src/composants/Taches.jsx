@@ -54,6 +54,10 @@ export default function Taches({etatTaches, utilisateur}) {
           autoFocus={true} 
         />
       </form>
+      <div className="titre-liste-taches">
+        <span className="texte">Tâche</span>
+        <span className="date">Date d'ajout</span>
+      </div>
       <div className="liste-taches">
         {
           taches.map(tache => <Tache key={tache.id} {... tache} />)
