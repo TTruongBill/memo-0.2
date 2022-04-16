@@ -14,7 +14,7 @@ export default function Taches({etatTaches, utilisateur}) {
     tacheModele.lireTout(uid).then(
       taches => setTaches(taches)
     )
-  , [setTaches, uid]);
+  , [uid, setTaches]);
 
   /**
    * Gérer le formulaire d'ajout de nouvelle tâche en appelant la méthode 
@@ -43,6 +43,14 @@ export default function Taches({etatTaches, utilisateur}) {
     }
   }
 
+  function supprimerTache(idTache) {
+    // Utiliser le modèle des taches pour supprimer la tache dans Firestore
+    tacheModele.supprimer(uid, idTache).then(
+      () => setTaches(taches.filter(
+        tache => tache.id !== idTache
+      ))
+    );
+  }
   return (
     <section className="Taches">
       <form onSubmit={e => gererAjoutTache(uid, e)}>
@@ -55,12 +63,12 @@ export default function Taches({etatTaches, utilisateur}) {
         />
       </form>
       <div className="titre-liste-taches">
-        <span className="texte">Tâche</span>
-        <span className="date">Date d'ajout</span>
+        <span className="texte" onClick={tacheModele.lireToutTache}>Tâche</span>
+        <span className="date" onClick={tacheModele.lireToutDate}>Date d'ajout</span>
       </div>
       <div className="liste-taches">
         {
-          taches.map(tache => <Tache key={tache.id} {... tache} />)
+          taches.map(tache => <Tache key={tache.id} {... tache} supprimerTache={supprimerTache}/>)
         }
       </div>
     </section>

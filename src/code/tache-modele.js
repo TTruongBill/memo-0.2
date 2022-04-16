@@ -1,5 +1,5 @@
 import { bdFirestore, collUtil, collTaches } from './init';
-import { collection, getDoc, getDocs, addDoc, Timestamp } from "firebase/firestore"; 
+import { collection, getDoc, getDocs, addDoc, Timestamp, orderBy, deleteDoc, doc, query } from "firebase/firestore"; 
 
 /**
  * Créer une nouvelle tâche pour l'utilisateur connecté
@@ -24,6 +24,28 @@ export async function creer(uid, tache) {
  */
 export async function lireTout(uid) {
   return getDocs(collection(bdFirestore, collUtil, uid, collTaches)).then(
+    qs  => qs.docs.map(doc => ({id: doc.id, ...doc.data()})) 
+  );
+}
+
+/**
+ * Supprimer un dossier pour l'utilisateur connecté
+ * @param {string} uid : id Firebase Auth de l'utilisateur connecté
+ * @param {string} idDossier : id du document correspondant au dossier à supprimer
+ * @returns {Promise<void>} : promesse contenant rien
+ */
+ export async function supprimer(uid, idtache) {
+  let refDoc = doc(bdFirestore, "memo", uid, "taches", idtache);
+  return await deleteDoc(refDoc)
+}
+
+export async function lireToutTache(uid) {
+  return getDocs(collection(bdFirestore, collUtil, uid, collTaches), orderBy("texte")).then(
+    qs  => qs.docs.map(doc => ({id: doc.id, ...doc.data()})) 
+  );
+}
+export async function lireToutDate(uid) {
+  return getDocs(collection(bdFirestore, collUtil, uid, collTaches), orderBy("date")).then(
     qs  => qs.docs.map(doc => ({id: doc.id, ...doc.data()})) 
   );
 }

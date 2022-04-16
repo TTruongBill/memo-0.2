@@ -14,6 +14,9 @@ export default function Appli() {
   // Observer le changement d'état de la connexion utilisateur
   useEffect(() => observerConnexion(setUtilisateur), []);
 
+  // État du formulaire d'ajout de dossier
+  const [ouvert, setOuvert] = useState(false);
+  
   // État des tâches
   const etatTaches = useState([]);
 
