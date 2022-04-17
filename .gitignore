@@ -21,7 +21,6 @@
 firebase.json
 firestore.indexes.json
 firestore.rules
-storage.rules
 
 # misc
 .DS_Store

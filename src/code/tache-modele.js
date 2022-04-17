@@ -29,9 +29,9 @@ export async function lireTout(uid) {
 }
 
 /**
- * Supprimer un dossier pour l'utilisateur connecté
+ * Supprimer un tache pour l'utilisateur connecté
  * @param {string} uid : id Firebase Auth de l'utilisateur connecté
- * @param {string} idDossier : id du document correspondant au dossier à supprimer
+ * @param {string} idtache : id du document correspondant au tache à supprimer
  * @returns {Promise<void>} : promesse contenant rien
  */
  export async function supprimer(uid, idtache) {

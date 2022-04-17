@@ -7,14 +7,17 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import TacheSupprime from "./TacheSupprime";
 import { useState } from 'react';
+import * as tacheModele from '../code/tache-modele';
 
 export default function Tache({id, texte, completee, date, supprimerTache}) {
   const [ouvert, setOuvert] = useState(false);
-
+  
   function gererSoumettre() {
-    // Appeler la fonction de ListeDossiers qui gère la suppression dans Firestore
+    // Appeler la fonction de taches qui gère la suppression dans Firestore
     supprimerTache(id);
   }
+
+  
 
   return (
     <div className="Tache">
@@ -26,7 +29,7 @@ export default function Tache({id, texte, completee, date, supprimerTache}) {
       <IconButton color="error" className='btn-padding-reduit-droite' onClick={() => setOuvert(true)}>
         <RemoveCircleIcon />
       </IconButton>
-      <TacheSupprime ouvert={ouvert} setOuvert={setOuvert} gererSoumettre={gererSoumettre}></TacheSupprime>
+      <TacheSupprime ouvert={ouvert} setOuvert={setOuvert} gererSoumettre={gererSoumettre}> </TacheSupprime>
     </div>
   );
 }

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -8,11 +7,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 export default function TacheSupprime({ouvert, setOuvert, gererSoumettre}) {
     
-
-    const gererOuvert = () => {
-        setOuvert(true);
-    };
-
     const gererFermer = () => {
         setOuvert(false);
     };
@@ -23,12 +17,12 @@ export default function TacheSupprime({ouvert, setOuvert, gererSoumettre}) {
             <DialogTitle>Voulez-vous effacer la tache?</DialogTitle>
             <DialogContent>
             <DialogContentText>
-            Si vous acceptez, vous ne pourrez plus retrouver votre tache.
+                Si vous acceptez, vous ne pourrez plus retrouver votre tache.
             </DialogContentText>
             </DialogContent>
             <DialogActions>
             <Button onClick={gererFermer}>Annuler</Button>
-            <Button onClick={gererSoumettre} autoFocus> Soumettre</Button>
+            <Button onClick={gererSoumettre}> Soumettre</Button>
             </DialogActions>
         </Dialog>
         </div>
