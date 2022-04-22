@@ -7,7 +7,9 @@ import { orderBy } from 'firebase/firestore';
 export default function Taches({etatTaches, utilisateur}) {
   const uid = utilisateur.uid;
   const [taches, setTaches] = etatTaches;
-  const [ordre, setOrdre] = useState('asc');
+  const [ordre, setOrdre] = useState(false);
+
+  let ordreTache;
 
   /**
    * On cherche les tâches une seule fois après l'affichage du composant
@@ -19,24 +21,31 @@ export default function Taches({etatTaches, utilisateur}) {
  , [uid, setTaches]);
 
   function gererOrdreTache(){
-    if(ordre == "asc"){
-      setOrdre("desc");
+
+    if(ordre == true){
+      setOrdre(false);
+      ordreTache = "desc";
+
     } else {
-      setOrdre("asc");
+      setOrdre(true);
+      ordreTache = "asc";
+
     }
     
-    tacheModele.lireTout(uid, orderBy("texte", ordre)).then(
+    
+    tacheModele.lireTout(uid, orderBy("texte", ordreTache)).then(
     taches => setTaches(taches));
   }
 
   function gererOrdreAjout(){
-    if(ordre == "asc"){
-      setOrdre("desc");
+    if(ordre == true){
+      setOrdre(false);
+      ordreTache = "desc";
     } else {
-      setOrdre("asc");
+      setOrdre(true);
+      ordreTache = "asc";
     }
-
-    tacheModele.lireTout(uid, orderBy("date", ordre)).then(
+    tacheModele.lireTout(uid, orderBy("date", ordreTache)).then(
     taches => setTaches(taches));   
   }
 
@@ -75,23 +84,6 @@ export default function Taches({etatTaches, utilisateur}) {
       ))
     );
   }
-
-  function modifierTache(idTache, complet) {
-    const lesModifs = {
-      completee: complet
-    };
-    tacheModele.modifier(uid, idTache, lesModifs).then(
-      () => setTaches(taches.map(
-        tache => {
-          if(tache.id === idTache) {
-            tache.completee = complet;
-          }
-          return tache;
-        }
-      ))
-    );
-  }
-
   return (
     <section className="Taches">
       <form onSubmit={e => gererAjoutTache(uid, e)}>
@@ -109,7 +101,7 @@ export default function Taches({etatTaches, utilisateur}) {
       </div>
       <div className="liste-taches">
         {
-          taches.map(tache => <Tache key={tache.id} {... tache} supprimerTache={supprimerTache} modifierTache={modifierTache}/>)
+          taches.map(tache => <Tache key={tache.id} {... tache} supprimerTache={supprimerTache}/>)
         }
       </div>
     </section>

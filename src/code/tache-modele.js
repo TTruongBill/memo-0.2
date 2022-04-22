@@ -1,5 +1,5 @@
 import { bdFirestore, collUtil, collTaches } from './init';
-import { collection, getDoc, getDocs, addDoc, Timestamp, deleteDoc, doc, query, updateDoc} from "firebase/firestore"; 
+import { collection, getDoc, getDocs, addDoc, Timestamp, orderBy, deleteDoc, doc, query, where } from "firebase/firestore"; 
 
 /**
  * Créer une nouvelle tâche pour l'utilisateur connecté
@@ -12,8 +12,8 @@ export async function creer(uid, tache) {
   // date du serveur Firestore.
   tache.date = Timestamp.fromDate(new Date());
   let collRef = collection(bdFirestore, collUtil, uid, collTaches);
-  let refDoc = await addDoc(collRef, tache);
-  let nouveauDoc = await getDoc(refDoc);
+  let docRef = await addDoc(collRef, tache);
+  let nouveauDoc = await getDoc(docRef);
   return {id: nouveauDoc.id, ...nouveauDoc.data()};
 }
 
@@ -41,11 +41,3 @@ export async function lireTout(uid, order) {
   return await deleteDoc(refDoc)
 }
 
-/**
- * Modifier les propriétés d'un dossier pour l'utilisateur connecté
- * 
- */
- export async function modifier(uid, idtache, objetModif) {
-  const refDoc = doc(bdFirestore, "memo", uid, "taches", idtache);
-  return await updateDoc(refDoc, objetModif);
-}
