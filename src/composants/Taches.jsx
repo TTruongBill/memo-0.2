@@ -1,20 +1,53 @@
 import Tache from './Tache';
 import './Taches.scss';
 import * as tacheModele from '../code/tache-modele';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { orderBy } from 'firebase/firestore';
 
 export default function Taches({etatTaches, utilisateur}) {
   const uid = utilisateur.uid;
   const [taches, setTaches] = etatTaches;
+  const [ordre, setOrdre] = useState(false);
+
+  let ordreTache;
 
   /**
    * On cherche les tâches une seule fois après l'affichage du composant
    */
-  useEffect(() => 
-    tacheModele.lireTout(uid).then(
-      taches => setTaches(taches)
-    )
-  , [uid, setTaches]);
+   useEffect(() => 
+   tacheModele.lireTout(uid, orderBy("date", "desc")).then(
+     taches => setTaches(taches)
+   )
+ , [uid, setTaches]);
+
+  function gererOrdreTache(){
+
+    if(ordre == true){
+      setOrdre(false);
+      ordreTache = "desc";
+
+    } else {
+      setOrdre(true);
+      ordreTache = "asc";
+
+    }
+    
+    
+    tacheModele.lireTout(uid, orderBy("texte", ordreTache)).then(
+    taches => setTaches(taches));
+  }
+
+  function gererOrdreAjout(){
+    if(ordre == true){
+      setOrdre(false);
+      ordreTache = "desc";
+    } else {
+      setOrdre(true);
+      ordreTache = "asc";
+    }
+    tacheModele.lireTout(uid, orderBy("date", ordreTache)).then(
+    taches => setTaches(taches));   
+  }
 
   /**
    * Gérer le formulaire d'ajout de nouvelle tâche en appelant la méthode 
@@ -63,8 +96,8 @@ export default function Taches({etatTaches, utilisateur}) {
         />
       </form>
       <div className="titre-liste-taches">
-        <span className="texte" onClick={tacheModele.lireToutTache}>Tâche</span>
-        <span className="date" onClick={tacheModele.lireToutDate}>Date d'ajout</span>
+        <span className="texte" onClick={gererOrdreTache}>Tâche</span>
+        <span className="date" onClick={gererOrdreAjout}>Date d'ajout</span>
       </div>
       <div className="liste-taches">
         {
